@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function SettingsScreen() {
-  const { city, setCity, country, setCountry } = useApp();
+  const { city, updateCity, country, updateCountry } = useApp();
   const [tempCity, setTempCity] = useState(city);
   const [tempCountry, setTempCountry] = useState(country);
 
   const saveSettings = () => {
-    setCity(tempCity);
-    setCountry(tempCountry);
+    updateCity(tempCity);
+    updateCountry(tempCountry);
     alert('✅ تم حفظ الإعدادات!');
   };
 
