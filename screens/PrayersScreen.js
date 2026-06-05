@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useApp } from '../context/AppContext';
 
 function PrayerCard({ name, time, icon, prayed, onPress }) {
   return (
@@ -15,18 +16,19 @@ function PrayerCard({ name, time, icon, prayed, onPress }) {
 }
 
 export default function PrayersScreen() {
+  const { city, country } = useApp();
   const [prayers, setPrayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchPrayerTimes();
-  }, []);
+  }, [city, country]);
 
   const fetchPrayerTimes = async () => {
     try {
       const response = await fetch(
-        'https://api.aladhan.com/v1/timingsByCity?city=Trondheim&country=Norway&method=3'
+        `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=3`
       );
       const data = await response.json();
       const timings = data.data.timings;
@@ -87,7 +89,7 @@ export default function PrayersScreen() {
         ListHeaderComponent={
           <View style={styles.header}>
             <Text style={styles.title}>🕌 مواقيت الصلاة</Text>
-            <Text style={styles.city}>📍 تروندهايم</Text>
+            <Text style={styles.city}>📍 {city}</Text>
             <Text style={styles.counter}>✅ صلوات تمّت: {count} من 5</Text>
           </View>
         }
